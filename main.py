@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
+import copy
 import time
 import datetime
 import threading
@@ -33,10 +34,8 @@ filename_list = [date_data[0],date_data[5],date_data[10],date_data[15],date_data
     date_data[25],date_data[30],date_data[35],date_data[40],date_data[45]]
 
 for k in filename_list:
-    print(k)
     with open('%s.csv'% k, 'a',newline="") as f:
         for n in range(5):
-            print(count+n)
             writer = csv.writer(f)
             writer.writerow([date_data[count+n],rate_data[count+n]])
     f.close()
@@ -44,12 +43,20 @@ for k in filename_list:
     count = count+ 5
 
 end =time.time()
-new_data = rate_data
+new_data = copy.copy(rate_data)
+print(end-start)
+
 time.sleep(sampling_interval-(end-start))
 
 ##新規データを取得
 new_data.append(1) ##新規データ
 del new_data[0]
     
+before = np.array(rate_data)
+after = np.array(new_data)
 
+delta_array = after - before
+print(before)
+print(after)
+print(delta_array)
             
